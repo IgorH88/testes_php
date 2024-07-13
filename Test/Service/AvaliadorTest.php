@@ -81,4 +81,31 @@
         
             self::assertEquals(2000, $menorValor);
         }
+
+        public function testPegaOsTresMelhoresValoresDosLances()
+        {
+            $leilao = new Leilao('Computar');
+
+            $usuJoao = new Usuario('Joao');
+            $usuMaria = new Usuario('Maria');
+            $usuAna = new Usuario('Ana');
+            $usuJose = new Usuario('Jose');
+
+            $leilao->recebeLance(new Lance($usuAna, 1700));
+            $leilao->recebeLance(new Lance($usuMaria, 2000));
+            $leilao->recebeLance(new Lance($usuJoao, 1000));
+            $leilao->recebeLance(new Lance($usuJose, 1500));
+
+            $leiloeiro = new Avaliador();
+
+            $leiloeiro->avalia($leilao);
+
+            $melhoresLaces = $leiloeiro->getMelhoresLances();
+
+            self::assertCount(3, $melhoresLaces);
+            self::assertEquals(2000, $melhoresLaces[0]->getValor());
+            self::assertEquals(1700, $melhoresLaces[1]->getValor());
+            self::assertEquals(1500, $melhoresLaces[2]->getValor());
+
+        }
     }

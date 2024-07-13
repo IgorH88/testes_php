@@ -19,7 +19,7 @@
                 }
                 $lancesArray = $leilao->getLances();
                 usort($lancesArray, function (Lance  $lance1, Lance $lance2) {
-                    return $lance1->getValor() - $lance2->getValor();
+                    return $lance2->getValor() - $lance1->getValor();
                 });
                 $this->melhoresLances = array_splice($lancesArray, 0, 3);
             }
@@ -32,6 +32,10 @@
 
         public function getMenorValor(): float {
             return $this->menorValor;
+        }
+
+        public function getMelhoresLances(): array {
+            return $this->melhoresLances;
         }
 
     }
