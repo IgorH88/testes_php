@@ -1,11 +1,13 @@
 <?php
     namespace Alura\Leilao\Model\Service;
+    use Alura\Leilao\Model\Lance;
     use Alura\Leilao\Model\Leilao;
 
     class Avaliador {
         private $maiorValor = -INF;
         private $menorValor = INF;
-
+        private $melhoresLances;
+        
         public function avalia(Leilao $leilao) :void {
 
             foreach($leilao->getLances() as $lance) {
@@ -15,6 +17,11 @@
                 if($lance->getValor() < $this->menorValor){
                     $this->menorValor = $lance->getValor();
                 }
+                $lancesArray = $leilao->getLances();
+                usort($lancesArray, function (Lance  $lance1, Lance $lance2) {
+                    return $lance1->getValor() - $lance2->getValor();
+                });
+                $this->melhoresLances = array_splice($lancesArray, 0, 3);
             }
 
         }
