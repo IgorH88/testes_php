@@ -9,6 +9,12 @@
 
     class AvaliadorTest extends TestCase
     {
+        private $leiloeiro;
+        public function setUp(): void
+        {
+            $this->leiloeiro = new Avaliador;
+        }
+
         public static function leilaoEmOrdemCrescente()
         {
             $leilao = new Leilao('Computador gamer');
@@ -24,7 +30,7 @@
             $leilao->recebeLance(new Lance($usuJoao, 2500));
 
             return [
-                [$leilao]
+                'ordem-crescente' => [$leilao]
             ];
         }
 
@@ -43,7 +49,7 @@
             $leilao->recebeLance(new Lance($usuJose, 1500));
 
             return [
-                [$leilao]
+                'ordem-decrescente' => [$leilao]
             ];
         }
     
@@ -62,7 +68,7 @@
             $leilao->recebeLance(new Lance($usuAna, 1700));
 
             return [
-                [$leilao]
+                'ordem-aleatoria' => [$leilao]
             ];
         }
 
@@ -73,10 +79,9 @@
          */
     
         public function testAvaliadorDeveEncontrarOMaiorValorDeLances(Leilao $leilao)
-        {
-            $leiloeiro = new Avaliador();        
-            $leiloeiro->avalia($leilao);
-            $maiorValor = $leiloeiro->getMaiorValor();        
+        {      
+            $this->leiloeiro->avalia($leilao);
+            $maiorValor = $this->leiloeiro->getMaiorValor();        
             self::assertEquals(2500, $maiorValor);
         }
 
@@ -86,10 +91,9 @@
          * @dataProvider leilaoEmOrdemDecrescente
          */
         public function testAvaliadorDeveEncontrarOMenorValorDeLances(Leilao $leilao)
-        {       
-            $leiloeiro = new Avaliador();        
-            $leiloeiro->avalia($leilao);
-            $menorValor = $leiloeiro->getMenorValor();        
+        {             
+            $this->leiloeiro->avalia($leilao);
+            $menorValor = $this->leiloeiro->getMenorValor();        
             self::assertEquals(1500, $menorValor);
         }
 
@@ -100,12 +104,8 @@
          */
         public function testPegaOsTresMelhoresValoresDosLances(Leilao $leilao)
         {
-            $leiloeiro = new Avaliador();
-
-            $leiloeiro->avalia($leilao);
-
-            $melhoresLaces = $leiloeiro->getMelhoresLances();
-
+            $this->leiloeiro->avalia($leilao);
+            $melhoresLaces = $this->leiloeiro->getMelhoresLances();
             self::assertCount(3, $melhoresLaces);
             self::assertEquals(2500, $melhoresLaces[0]->getValor());
             self::assertEquals(2000, $melhoresLaces[1]->getValor());
