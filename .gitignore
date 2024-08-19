@@ -1,2 +1,4 @@
 vendor/
 .idea/
+testdox.php
+.phpunit.result.cache
